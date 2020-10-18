@@ -10,7 +10,7 @@ interface PlayerModel {
 
 const Tutto: React.FunctionComponent = () => {
   const [isGameOn, setGameOn] = useState(false);
-  const [activePlayer, setActivePlayer] = useState("Anna");
+  const [activePlayer, setActivePlayer] = useState(0);
   const [players, setPlayers] = useState<PlayerModel[]>([
     { name: "Anna", points: [] },
     { name: "Bob", points: [] },
@@ -26,13 +26,13 @@ const Tutto: React.FunctionComponent = () => {
     const value = parseInt(inputRef.current!.value);
     setPlayers(
       players.map((p) => {
-        if (p.name === activePlayer) {
+        if (players.indexOf(p) === activePlayer) {
           p.points.push(value);
         }
         return p;
       })
     );
-    setActivePlayer("Bob");
+    setActivePlayer(activePlayer === 0 ? 1 : 0);
   };
 
   return isGameOn ? (
@@ -41,7 +41,7 @@ const Tutto: React.FunctionComponent = () => {
         <Player
           name={p.name}
           points={p.points[p.points.length - 1]}
-          isActive={p.name === activePlayer}
+          isActive={players.indexOf(p) === activePlayer}
           key={p.name}
         />
       ))}
