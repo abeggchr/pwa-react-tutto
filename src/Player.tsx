@@ -6,12 +6,11 @@ const Player: FunctionComponent<{
   isActive: boolean;
   points: number;
 }> = (props) => {
-  const className = props.isActive ? "active" : "";
-
   return (
-    <>
-      <span className={className}>{props.name}</span>
-    </>
+    <li className={props.isActive ? "active" : ""}>
+      <span>{props.name}</span>
+      <span>{props.points}</span>
+    </li>
   );
 };
 
