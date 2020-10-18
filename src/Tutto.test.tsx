@@ -9,14 +9,14 @@ describe("when there are 2 players Anna and Bob", () => {
     renderResult = render(<Tutto />);
   });
 
-  test("start game", () => {
+  test("a simple game", () => {
     const button = renderResult.getByText("Spiel starten");
 
     expect(button).toBeInTheDocument();
     button.click();
 
     expect(button).not.toBeInTheDocument();
-    expect(renderResult.getByText("Anna")).toBeInTheDocument();
-    expect(renderResult.getByText("Bob")).toBeInTheDocument();
+    expect(renderResult.getByText("Anna")).toHaveClass("active");
+    expect(renderResult.getByText("Bob")).not.toHaveClass("active");
   });
 });

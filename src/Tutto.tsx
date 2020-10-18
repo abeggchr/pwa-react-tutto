@@ -11,7 +11,7 @@ const Tutto: React.FunctionComponent = () => {
 
   return isGameOn ? (
     <div>
-      <span>Anna</span>
+      <span className="active">Anna</span>
       <span>Bob</span>
     </div>
   ) : (
