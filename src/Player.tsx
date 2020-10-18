@@ -8,8 +8,7 @@ const Player: FunctionComponent<{
 }> = (props) => {
   return (
     <li className={props.isActive ? "active" : ""}>
-      <span>{props.name}</span>
-      <span>{props.points}</span>
+      <span>{props.name}</span> (<span>{props.points}</span>)
     </li>
   );
 };

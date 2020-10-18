@@ -12,8 +12,8 @@ const Tutto: React.FunctionComponent = () => {
   const [isGameOn, setGameOn] = useState(false);
   const [activePlayer, setActivePlayer] = useState(0);
   const [players, setPlayers] = useState<PlayerModel[]>([
-    { name: "Anna", points: [] },
-    { name: "Bob", points: [] },
+    { name: "Anna", points: [0] },
+    { name: "Bob", points: [0] },
   ]);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,14 +37,16 @@ const Tutto: React.FunctionComponent = () => {
 
   return isGameOn ? (
     <div>
-      {players.map((p) => (
-        <Player
-          name={p.name}
-          points={p.points[p.points.length - 1]}
-          isActive={players.indexOf(p) === activePlayer}
-          key={p.name}
-        />
-      ))}
+      <ul>
+        {players.map((p) => (
+          <Player
+            name={p.name}
+            points={p.points[p.points.length - 1]}
+            isActive={players.indexOf(p) === activePlayer}
+            key={p.name}
+          />
+        ))}
+      </ul>
       <label htmlFor="newValue">Neuer Wert</label>
       <input type="number" id="newValue" ref={inputRef} />
       <button onClick={onContinue}>Weiter</button>
