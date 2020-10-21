@@ -2,7 +2,7 @@ import Button from "antd/lib/button/button";
 import React, { useRef, useState } from "react";
 import "./App.css";
 import { Steps } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, CrownOutlined } from "@ant-design/icons";
 import StartGame from "./StartGame";
 import { Card, Deck } from "./Deck";
 
@@ -43,7 +43,7 @@ const Tutto: React.FunctionComponent = () => {
     setActivePlayer(activePlayer === 0 ? 1 : 0);
   };
 
-  const playersInSteps = () => {
+  const getPlayersInSteps = () => {
     let retval = players.slice(activePlayer - players.length);
     console.log(retval);
     if (retval.length < players.length) {
@@ -52,15 +52,28 @@ const Tutto: React.FunctionComponent = () => {
     return retval.flat();
   };
 
+  const getPlayerOutline = (player: PlayerModel) => {
+    const isWinner = !players.some(
+      (p) =>
+        p.name != player.name &&
+        p.points[p.points.length - 1] > player.points[player.points.length - 1]
+    );
+    if (isWinner) {
+      return <CrownOutlined />;
+    } else {
+      return <UserOutlined />;
+    }
+  };
+
   return isGameOn ? (
     <div>
       <div data-testid="steps-container">
         <Steps current={0}>
-          {playersInSteps().map((p) => (
+          {getPlayersInSteps().map((p) => (
             <Step
               title={p.name}
               description={p.points[p.points.length - 1]}
-              icon={<UserOutlined />}
+              icon={getPlayerOutline(p)}
               key={p.name}
             />
           ))}
