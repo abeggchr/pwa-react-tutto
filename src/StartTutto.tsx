@@ -1,7 +1,11 @@
 import { Button, Input } from "antd";
 import React, { FunctionComponent, useRef, useState } from "react";
 import "./App.css";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  PlusCircleOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons";
 
 const StartGame: FunctionComponent<{ onStart: () => void }> = (props) => {
   const newPlayerInput = useRef<Input>(null);
@@ -22,11 +26,19 @@ const StartGame: FunctionComponent<{ onStart: () => void }> = (props) => {
 
   return (
     <>
+      <h2>Spieler</h2>
       <ul>
         {players.map((p) => (
           <li key={p}>
+            <UserOutlined />
             {p}
-            <Button onClick={() => removePlayer(p)}>-</Button>
+            <Button
+              onClick={() => removePlayer(p)}
+              icon={<MinusCircleOutlined />}
+              shape="circle"
+              title="-"
+              style={{ marginLeft: "10px" }}
+            />
           </li>
         ))}
         <li>
@@ -36,12 +48,20 @@ const StartGame: FunctionComponent<{ onStart: () => void }> = (props) => {
             alt="Neuer Spieler:"
             onPressEnter={addPlayer}
             prefix={<UserOutlined className="site-form-item-icon" />}
-            addonAfter={<Button onClick={addPlayer}>+</Button>}
+            addonAfter={
+              <Button
+                onClick={addPlayer}
+                icon={<PlusCircleOutlined />}
+                title="+"
+              />
+            }
           />
         </li>
       </ul>
 
-      <Button onClick={props.onStart}>Spiel starten</Button>
+      <Button type="primary" onClick={props.onStart} shape="round">
+        Spiel starten
+      </Button>
     </>
   );
 };

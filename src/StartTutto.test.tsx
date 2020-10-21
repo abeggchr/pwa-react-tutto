@@ -16,7 +16,7 @@ test("adds player", async () => {
 
   expect(renderResult.queryByText("Player")).not.toBeInTheDocument();
   await userEvent.type(input, "Player");
-  renderResult.getByText("+").click();
+  renderResult.getByTitle("+").click();
 
   expect(renderResult.getByText("Player")).toBeInTheDocument();
 });
@@ -24,8 +24,8 @@ test("adds player", async () => {
 test("removes player", async () => {
   const input = renderResult.getByAltText("Neuer Spieler:");
   await userEvent.type(input, "Player");
-  renderResult.getByText("+").click();
+  renderResult.getByTitle("+").click();
 
-  renderResult.getByText("-").click();
+  renderResult.getByTitle("-").click();
   expect(renderResult.queryByText("Player")).not.toBeInTheDocument();
 });
