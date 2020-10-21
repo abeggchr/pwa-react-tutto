@@ -17,10 +17,13 @@ const StartGame: FunctionComponent<{
 
   const addPlayer = () => {
     const name = newPlayerInput?.current?.input?.value;
+    let newPlayers = players;
     if (name) {
-      setPlayers([...players, name]);
+      newPlayers = [...players, name];
+      setPlayers(newPlayers);
     }
     newPlayerInput?.current?.setValue("");
+    return newPlayers;
   };
 
   const removePlayer = (name: string) => {
@@ -28,7 +31,8 @@ const StartGame: FunctionComponent<{
   };
 
   const onStart = () => {
-    const out: PlayerModel[] = players.map((p) => {
+    const updatedPlayers = addPlayer();
+    const out: PlayerModel[] = updatedPlayers.map((p) => {
       return { name: p, points: [0] };
     });
     props.onStart(out);

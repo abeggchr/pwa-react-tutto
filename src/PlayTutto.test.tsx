@@ -85,3 +85,49 @@ describe("when there are 2 players Anna and Bob", () => {
     expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
   });
 });
+
+describe("when there are 2 players Anna, Bob and Chris", () => {
+  let renderResult: RenderResult;
+
+  beforeEach(() => {
+    mockDraw.mockClear();
+
+    renderResult = render(
+      <PlayTutto
+        players={[
+          { name: "Anna", points: [0] },
+          { name: "Bob", points: [0] },
+          { name: "Chris", points: [0] },
+        ]}
+      />
+    );
+  });
+
+  test("indicates active player", () => {
+    const steps = new StepsPageObject(renderResult);
+    expect(steps.isActive("Anna")).toBe(true);
+    expect(steps.isActive("Bob")).toBe(false);
+    expect(steps.isActive("Chris")).toBe(false);
+
+    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "100");
+    renderResult.getByText("Weiter").click();
+
+    expect(steps.isActive("Anna")).toBe(false);
+    expect(steps.isActive("Bob")).toBe(true);
+    expect(steps.isActive("Chris")).toBe(false);
+
+    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "200");
+    renderResult.getByText("Weiter").click();
+
+    expect(steps.isActive("Anna")).toBe(false);
+    expect(steps.isActive("Bob")).toBe(false);
+    expect(steps.isActive("Chris")).toBe(true);
+
+    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "300");
+    renderResult.getByText("Weiter").click();
+
+    expect(steps.isActive("Anna")).toBe(true);
+    expect(steps.isActive("Bob")).toBe(false);
+    expect(steps.isActive("Chris")).toBe(false);
+  });
+});

@@ -37,7 +37,8 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
 
   const onContinue = () => {
     const value = parseInt(inputRef.current!.input!.value);
-    const nextActivePlayer = activePlayer === 0 ? 1 : 0;
+    const nextActivePlayer =
+      activePlayer === players.length - 1 ? 0 : activePlayer + 1;
     setCard(deck.draw());
     setPlayers(
       players.map((p) => {
