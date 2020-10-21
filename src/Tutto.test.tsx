@@ -1,7 +1,5 @@
 import React from "react";
 import { render, RenderResult } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { StepsPageObject } from "./StepsPageObject";
 import Tutto from "./Tutto";
 
 describe("when there Tutto is rendered", () => {
