@@ -3,20 +3,19 @@ import { render, RenderResult } from "@testing-library/react";
 import Tutto from "./Tutto";
 import userEvent from "@testing-library/user-event";
 import { StepsPageObject } from "./StepsPageObject";
-import { Deck } from "./Deck";
+
+const mockDraw = jest.fn().mockImplementation(() => {
+  return {
+    src: "/cards/bonus-200.jpg",
+    name: "Bonus 200",
+    occurence: 5,
+  };
+});
 
 jest.mock("./Deck", () => {
   return {
     Deck: jest.fn().mockImplementation(() => {
-      return {
-        draw: () => {
-          return {
-            src: "/cards/bonus-200.jpg",
-            name: "Bonus 200",
-            occurence: 5,
-          };
-        },
-      };
+      return { draw: mockDraw };
     }),
   };
 });
@@ -25,10 +24,7 @@ describe("when there are 2 players Anna and Bob", () => {
   let renderResult: RenderResult;
 
   beforeEach(() => {
-    // Clear all instances and calls to constructor and all methods:
-    let mockedDeck = Deck as jest.Mock;
-    mockedDeck.mockClear();
-
+    mockDraw.mockClear();
     renderResult = render(<Tutto />);
   });
 
@@ -85,9 +81,16 @@ describe("when there are 2 players Anna and Bob", () => {
     expect(renderResult.getByText("200")).toBeInTheDocument();
   });
 
-  test("shows cards", () => {
+  test("draws and shows cards", () => {
     renderResult.getByText("Spiel starten").click();
 
     expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
+    expect(mockDraw).toHaveBeenCalledTimes(2); // Todo: why twice?
+
+    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "200");
+    renderResult.getByText("Weiter").click();
+
+    expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
+    expect(mockDraw).toHaveBeenCalledTimes(4); // Todo: why four times?
   });
 });
