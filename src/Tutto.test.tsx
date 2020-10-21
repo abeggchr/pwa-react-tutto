@@ -3,11 +3,32 @@ import { render, RenderResult } from "@testing-library/react";
 import Tutto from "./Tutto";
 import userEvent from "@testing-library/user-event";
 import { StepsPageObject } from "./StepsPageObject";
+import { Deck } from "./Deck";
+
+jest.mock("./Deck", () => {
+  return {
+    Deck: jest.fn().mockImplementation(() => {
+      return {
+        draw: () => {
+          return {
+            src: "/cards/bonus-200.jpg",
+            name: "Bonus 200",
+            occurence: 5,
+          };
+        },
+      };
+    }),
+  };
+});
 
 describe("when there are 2 players Anna and Bob", () => {
   let renderResult: RenderResult;
 
   beforeEach(() => {
+    // Clear all instances and calls to constructor and all methods:
+    let mockedDeck = Deck as jest.Mock;
+    mockedDeck.mockClear();
+
     renderResult = render(<Tutto />);
   });
 
