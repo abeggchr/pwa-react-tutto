@@ -43,11 +43,20 @@ const Tutto: React.FunctionComponent = () => {
     setActivePlayer(activePlayer === 0 ? 1 : 0);
   };
 
+  const playersInSteps = () => {
+    let retval = players.slice(activePlayer - players.length);
+    console.log(retval);
+    if (retval.length < players.length) {
+      retval = retval.concat(players.slice(0, activePlayer));
+    }
+    return retval.flat();
+  };
+
   return isGameOn ? (
     <div>
       <div data-testid="steps-container">
-        <Steps current={activePlayer}>
-          {players.map((p) => (
+        <Steps current={0}>
+          {playersInSteps().map((p) => (
             <Step
               title={p.name}
               description={p.points[p.points.length - 1]}
