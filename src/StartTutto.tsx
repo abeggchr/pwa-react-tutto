@@ -13,7 +13,7 @@ const StartGame: FunctionComponent<{
 }> = (props) => {
   const newPlayerInput = useRef<Input>(null);
 
-  const [players, setPlayers] = useState<string[]>([]);
+  const [players, setPlayers] = useState<string[]>(["A", "B"]);
 
   const addPlayer = () => {
     const name = newPlayerInput?.current?.input?.value;
@@ -37,7 +37,7 @@ const StartGame: FunctionComponent<{
   return (
     <>
       <h2>Spieler</h2>
-      <ul>
+      <ul className="players">
         {players.map((p) => (
           <li key={p}>
             <UserOutlined />
@@ -69,7 +69,12 @@ const StartGame: FunctionComponent<{
         </li>
       </ul>
 
-      <Button type="primary" onClick={onStart} shape="round">
+      <Button
+        type="primary"
+        onClick={onStart}
+        shape="round"
+        disabled={players.length === 0}
+      >
         Spiel starten
       </Button>
     </>

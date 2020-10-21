@@ -22,6 +22,8 @@ test("adds player", async () => {
 });
 
 test("removes player", async () => {
+  renderResult.queryAllByTitle("-").forEach((b) => b.click()); // remove all existing
+
   const input = renderResult.getByAltText("Neuer Spieler:");
   await userEvent.type(input, "Player");
   renderResult.getByTitle("+").click();

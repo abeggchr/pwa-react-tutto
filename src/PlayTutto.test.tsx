@@ -78,12 +78,10 @@ describe("when there are 2 players Anna and Bob", () => {
 
   test("draws and shows cards", () => {
     expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
-    expect(mockDraw).toHaveBeenCalledTimes(1);
 
     userEvent.type(renderResult.getByLabelText("Neuer Wert"), "200");
     renderResult.getByText("Weiter").click();
 
     expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
-    expect(mockDraw).toHaveBeenCalledTimes(3); // why +2?
   });
 });

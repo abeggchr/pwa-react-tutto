@@ -5,6 +5,7 @@ body {
 .tutto .ant-btn-primary {
   width: 100%;
   height: 10vh;
+  font-size: 60px;
 }
 
 .tutto .card {
@@ -12,4 +13,31 @@ body {
   border: 5px;
   border-style: solid;
   border-radius: 10px;
+  margin-top: 3vh;
+}
+
+.tutto .values {
+  padding-top: 3vh;
+  padding-bottom: 2vh;
+}
+
+.tutto .values .ant-input-group-addon {
+  width: 50%;
+  font-size: 30px;
+}
+
+.tutto .values input {
+  font-size: 30px;
+}
+
+.tutto .ant-steps-item-title {
+  font-size: 30px;
+}
+
+.tutto .ant-steps-item-description {
+  font-size: 20px;
+}
+
+.tutto ul.players {
+  font-size: 20px;
 }
