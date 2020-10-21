@@ -2,6 +2,7 @@ import React from "react";
 import { render, RenderResult } from "@testing-library/react";
 import Tutto from "./Tutto";
 import userEvent from "@testing-library/user-event";
+import { StepsPageObject } from "./StepsPageObject";
 
 describe("when there are 2 players Anna and Bob", () => {
   let renderResult: RenderResult;
@@ -20,28 +21,23 @@ describe("when there are 2 players Anna and Bob", () => {
   });
 
   test("indicates active player", () => {
+    const steps = new StepsPageObject(renderResult);
     renderResult.getByText("Spiel starten").click();
 
-    expect(renderResult.getByText("Anna").parentElement).toHaveClass("active");
-    expect(renderResult.getByText("Bob").parentElement).not.toHaveClass(
-      "active"
-    );
+    expect(steps.isActive("Anna")).toBe(true);
+    expect(steps.isActive("Bob")).toBe(false);
 
     userEvent.type(renderResult.getByLabelText("Neuer Wert"), "100");
     renderResult.getByText("Weiter").click();
 
-    expect(renderResult.getByText("Anna").parentElement).not.toHaveClass(
-      "active"
-    );
-    expect(renderResult.getByText("Bob").parentElement).toHaveClass("active");
+    expect(steps.isActive("Anna")).toBe(false);
+    expect(steps.isActive("Bob")).toBe(true);
 
     userEvent.type(renderResult.getByLabelText("Neuer Wert"), "200");
     renderResult.getByText("Weiter").click();
 
-    expect(renderResult.getByText("Anna").parentElement).toHaveClass("active");
-    expect(renderResult.getByText("Bob").parentElement).not.toHaveClass(
-      "active"
-    );
+    expect(steps.isActive("Anna")).toBe(true);
+    expect(steps.isActive("Bob")).toBe(false);
   });
 
   test("counts points", () => {
@@ -66,5 +62,11 @@ describe("when there are 2 players Anna and Bob", () => {
     expect(renderResult.queryByText("100")).not.toBeInTheDocument();
     expect(renderResult.getByText("300")).toBeInTheDocument();
     expect(renderResult.getByText("200")).toBeInTheDocument();
+  });
+
+  test("shows cards", () => {
+    renderResult.getByText("Spiel starten").click();
+
+    expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
   });
 });

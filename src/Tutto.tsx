@@ -4,6 +4,7 @@ import "./App.css";
 import { Steps } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import StartGame from "./StartGame";
+import { Card, Deck } from "./Deck";
 
 const { Step } = Steps;
 
@@ -19,6 +20,8 @@ const Tutto: React.FunctionComponent = () => {
     { name: "Anna", points: [0] },
     { name: "Bob", points: [0] },
   ]);
+  const deck = new Deck();
+  const [card, setCard] = useState<Card>(deck.draw());
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -28,6 +31,7 @@ const Tutto: React.FunctionComponent = () => {
 
   const onContinue = () => {
     const value = parseInt(inputRef.current!.value);
+    setCard(deck.draw());
     setPlayers(
       players.map((p) => {
         if (players.indexOf(p) === activePlayer) {
@@ -41,15 +45,19 @@ const Tutto: React.FunctionComponent = () => {
 
   return isGameOn ? (
     <div>
-      <Steps current={1}>
-        {players.map((p) => (
-          <Step
-            title={p.name}
-            description={p.points[p.points.length - 1]}
-            icon={<UserOutlined />}
-          />
-        ))}
-      </Steps>
+      <div data-testid="steps-container">
+        <Steps current={activePlayer}>
+          {players.map((p) => (
+            <Step
+              title={p.name}
+              description={p.points[p.points.length - 1]}
+              icon={<UserOutlined />}
+              key={p.name}
+            />
+          ))}
+        </Steps>
+      </div>
+      <img src={card.src} alt={card.name}></img>
       <label htmlFor="newValue">Neuer Wert</label>
       <input type="number" id="newValue" ref={inputRef} />
       <Button onClick={onContinue}>Weiter</Button>
