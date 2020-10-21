@@ -62,7 +62,7 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
   const getPlayerOutline = (player: PlayerModel) => {
     const isWinner = !players.some(
       (p) =>
-        p.name != player.name &&
+        p.name !== player.name &&
         p.points[p.points.length - 1] > player.points[player.points.length - 1]
     );
     if (isWinner) {
