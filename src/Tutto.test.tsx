@@ -20,6 +20,8 @@ describe("when there Tutto is rendered", () => {
   });
 
   test("adds 2 players and starts game", async () => {
+    renderResult.queryAllByTitle("-").forEach((b) => b.click());
+
     const input = renderResult.getByAltText("Neuer Spieler:");
 
     await userEvent.type(input, "Player1");
@@ -31,6 +33,6 @@ describe("when there Tutto is rendered", () => {
     renderResult.getByText("Spiel starten").click();
 
     expect(renderResult.getByText("Player1")).toBeInTheDocument();
-    expect(renderResult.getByText("Player2")).toBeInTheDocument();
+    expect(renderResult.getByText("Weiter")).toBeInTheDocument();
   });
 });

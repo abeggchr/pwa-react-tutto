@@ -28,43 +28,49 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
     }
   };
 
-  const [activePlayer, setActivePlayer] = useState(0);
+  const [activePlayerIndex, setActivePlayerIndex] = useState(0);
   const [players, setPlayers] = useState<PlayerModel[]>(props.players);
   const [card, setCard] = useState<Card>(deck.draw());
-  const [value, setValue] = useState<number>(getPlayersCurrentPoints(0));
+  const activePlayer = players[activePlayerIndex];
 
   const inputRef = useRef<Input>(null);
 
   const onContinue = () => {
-    const value = parseInt(inputRef.current!.input!.value);
+    let value = parseInt(inputRef.current!.input!.value);
+    if (isNaN(value)) {
+      value = 0;
+    }
     const nextActivePlayer =
-      activePlayer === players.length - 1 ? 0 : activePlayer + 1;
+      activePlayerIndex === players.length - 1 ? 0 : activePlayerIndex + 1;
     setCard(deck.draw());
     setPlayers(
       players.map((p) => {
-        if (players.indexOf(p) === activePlayer) {
-          p.points.push(value);
+        if (players.indexOf(p) === activePlayerIndex) {
+          p.points.push(value + getPlayerPoints(p));
         }
         return p;
       })
     );
-    setActivePlayer(nextActivePlayer);
-    setValue(getPlayersCurrentPoints(nextActivePlayer));
+    setActivePlayerIndex(nextActivePlayer);
+    inputRef.current!.setValue("");
   };
 
   const getPlayersInSteps = () => {
-    let retval = players.slice(activePlayer - players.length);
+    let retval = players.slice(activePlayerIndex - players.length);
     if (retval.length < players.length) {
-      retval = retval.concat(players.slice(0, activePlayer));
+      retval = retval.concat(players.slice(0, activePlayerIndex));
     }
     return retval.flat();
+  };
+
+  const getPlayerPoints = (player: PlayerModel) => {
+    return player.points[player.points.length - 1];
   };
 
   const getPlayerOutline = (player: PlayerModel) => {
     const isWinner = !players.some(
       (p) =>
-        p.name !== player.name &&
-        p.points[p.points.length - 1] > player.points[player.points.length - 1]
+        p.name !== player.name && getPlayerPoints(p) > getPlayerPoints(player)
     );
     if (isWinner) {
       return <CrownOutlined />;
@@ -75,47 +81,19 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
 
   return (
     <div>
-      <div data-testid="steps-container">
-        <Steps current={0}>
-          {getPlayersInSteps().map((p) => (
-            <Step
-              title={p.name}
-              description={p.points[p.points.length - 1]}
-              icon={getPlayerOutline(p)}
-              key={p.name}
-            />
-          ))}
-        </Steps>
-      </div>
       <img src={card.src} alt={card.name} className="card"></img>
 
       <p className="values">
-        <Input
-          type="number"
-          id="oldValue"
-          value={getPlayersCurrentPoints(activePlayer)}
-          disabled
-          addonBefore={<label htmlFor="oldValue">Alter Wert</label>}
-        />
-
+        <span className="playerName">{activePlayer.name}</span>
+        {getPlayerOutline(activePlayer)}
+        <span className="playerPoints">({getPlayerPoints(activePlayer)})</span>
         <Input
           type="number"
           id="newValue"
+          alt="Neuer Wert"
           ref={inputRef}
-          value={value}
-          onChange={(event) => {
-            setValue(parseInt(event.target.value));
-          }}
           onPressEnter={onContinue}
-          addonBefore={<label htmlFor="newValue">Neuer Wert</label>}
-        />
-
-        <Input
-          type="number"
-          id="difference"
-          value={value - getPlayersCurrentPoints(activePlayer)}
-          disabled
-          addonBefore={<label htmlFor="difference">Differenz</label>}
+          autoFocus={true}
         />
       </p>
 

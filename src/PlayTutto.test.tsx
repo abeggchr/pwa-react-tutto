@@ -1,7 +1,6 @@
 import React from "react";
 import { render, RenderResult } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { StepsPageObject } from "./StepsPageObject";
 import PlayTutto from "./PlayTutto";
 
 const mockDraw = jest.fn().mockImplementation(() => {
@@ -37,56 +36,53 @@ describe("when there are 2 players Anna and Bob", () => {
   });
 
   test("indicates active player", () => {
-    const steps = new StepsPageObject(renderResult);
-    expect(steps.isActive("Anna")).toBe(true);
-    expect(steps.isActive("Bob")).toBe(false);
+    expect(renderResult.queryByText("Anna")).toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).not.toBeInTheDocument();
 
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "100");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "100");
     renderResult.getByText("Weiter").click();
 
-    expect(steps.isActive("Anna")).toBe(false);
-    expect(steps.isActive("Bob")).toBe(true);
+    expect(renderResult.queryByText("Anna")).not.toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).toBeInTheDocument();
 
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "200");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "200");
     renderResult.getByText("Weiter").click();
 
-    expect(steps.isActive("Anna")).toBe(true);
-    expect(steps.isActive("Bob")).toBe(false);
+    expect(renderResult.queryByText("Anna")).toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).not.toBeInTheDocument();
   });
 
   test("counts points", () => {
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "100");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "100"); // Anna: 100
     renderResult.getByText("Weiter").click();
 
-    expect(renderResult.getByText("100")).toBeInTheDocument();
-    expect(renderResult.getByText("0")).toBeInTheDocument();
-
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "200");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "200"); // Bob: 200
     renderResult.getByText("Weiter").click();
 
-    expect(renderResult.getByText("100")).toBeInTheDocument();
-    expect(renderResult.getByText("200")).toBeInTheDocument();
+    expect(renderResult.getByText("(100)")).toBeInTheDocument(); // Anna: 100
 
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "300");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "300"); // Anna: 400
     renderResult.getByText("Weiter").click();
 
-    expect(renderResult.queryByText("0")).not.toBeInTheDocument();
-    expect(renderResult.queryByText("100")).not.toBeInTheDocument();
-    expect(renderResult.getByText("300")).toBeInTheDocument();
-    expect(renderResult.getByText("200")).toBeInTheDocument();
+    expect(renderResult.getByText("(200)")).toBeInTheDocument(); // Bob: 200
+
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "400"); // Bob: 500
+    renderResult.getByText("Weiter").click();
+
+    expect(renderResult.getByText("(400)")).toBeInTheDocument(); // Anna: 400
   });
 
   test("draws and shows cards", () => {
     expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
 
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "200");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "200");
     renderResult.getByText("Weiter").click();
 
     expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
   });
 });
 
-describe("when there are 2 players Anna, Bob and Chris", () => {
+describe("when there are 3 players Anna, Bob and Chris", () => {
   let renderResult: RenderResult;
 
   beforeEach(() => {
@@ -104,30 +100,29 @@ describe("when there are 2 players Anna, Bob and Chris", () => {
   });
 
   test("indicates active player", () => {
-    const steps = new StepsPageObject(renderResult);
-    expect(steps.isActive("Anna")).toBe(true);
-    expect(steps.isActive("Bob")).toBe(false);
-    expect(steps.isActive("Chris")).toBe(false);
+    expect(renderResult.queryByText("Anna")).toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).not.toBeInTheDocument();
+    expect(renderResult.queryByText("Chris")).not.toBeInTheDocument();
 
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "100");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "100");
     renderResult.getByText("Weiter").click();
 
-    expect(steps.isActive("Anna")).toBe(false);
-    expect(steps.isActive("Bob")).toBe(true);
-    expect(steps.isActive("Chris")).toBe(false);
+    expect(renderResult.queryByText("Anna")).not.toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).toBeInTheDocument();
+    expect(renderResult.queryByText("Chris")).not.toBeInTheDocument();
 
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "200");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "200");
     renderResult.getByText("Weiter").click();
 
-    expect(steps.isActive("Anna")).toBe(false);
-    expect(steps.isActive("Bob")).toBe(false);
-    expect(steps.isActive("Chris")).toBe(true);
+    expect(renderResult.queryByText("Anna")).not.toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).not.toBeInTheDocument();
+    expect(renderResult.queryByText("Chris")).toBeInTheDocument();
 
-    userEvent.type(renderResult.getByLabelText("Neuer Wert"), "300");
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "300");
     renderResult.getByText("Weiter").click();
 
-    expect(steps.isActive("Anna")).toBe(true);
-    expect(steps.isActive("Bob")).toBe(false);
-    expect(steps.isActive("Chris")).toBe(false);
+    expect(renderResult.queryByText("Anna")).toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).not.toBeInTheDocument();
+    expect(renderResult.queryByText("Chris")).not.toBeInTheDocument();
   });
 });
