@@ -1,11 +1,10 @@
-import React from 'react';
-import './App.css';
-import Tutto from './Tutto';
+import React from "react";
+import "./App.css";
+import "antd/dist/antd.css";
+import Tutto from "./Tutto";
 
 function App() {
-  return (
-    <Tutto />
-  );
+  return <Tutto />;
 }
 
 export default App;

@@ -1,7 +1,11 @@
+import Button from "antd/lib/button/button";
 import React, { useRef, useState } from "react";
 import "./App.css";
-import Player from "./Player";
+import { Steps } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import StartGame from "./StartGame";
+
+const { Step } = Steps;
 
 interface PlayerModel {
   name: string;
@@ -37,19 +41,18 @@ const Tutto: React.FunctionComponent = () => {
 
   return isGameOn ? (
     <div>
-      <ul>
+      <Steps current={1}>
         {players.map((p) => (
-          <Player
-            name={p.name}
-            points={p.points[p.points.length - 1]}
-            isActive={players.indexOf(p) === activePlayer}
-            key={p.name}
+          <Step
+            title={p.name}
+            description={p.points[p.points.length - 1]}
+            icon={<UserOutlined />}
           />
         ))}
-      </ul>
+      </Steps>
       <label htmlFor="newValue">Neuer Wert</label>
       <input type="number" id="newValue" ref={inputRef} />
-      <button onClick={onContinue}>Weiter</button>
+      <Button onClick={onContinue}>Weiter</Button>
     </div>
   ) : (
     <StartGame onStart={onStart} />
