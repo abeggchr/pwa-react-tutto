@@ -16,17 +16,24 @@ body {
 }
 
 .tutto .values {
-  padding-top: 2vh;
-  padding-bottom: 1vh;
+  padding-top: 10px;
+  height: 40px;
+  padding-bottom: 20px;
 }
 
-.tutto .values .playerName {
+.tutto .values .player {
+  width: "40%";
+  float: "left";
+  padding-top: "5px";
+}
+
+.tutto .values .player .playerName {
   font-size: 16px;
   font-weight: bold;
   padding-right: 5px;
 }
 
-.tutto .values .playerPoints {
+.tutto .values .player .playerPoints {
   font-size: 12px;
   font-weight: bold;
   padding-left: 5px;

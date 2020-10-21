@@ -8,6 +8,7 @@ const mockDraw = jest.fn().mockImplementation(() => {
     src: "/cards/bonus-200.jpg",
     name: "Bonus 200",
     occurence: 5,
+    description: "Bonus 200 Description",
   };
 });
 
@@ -79,6 +80,29 @@ describe("when there are 2 players Anna and Bob", () => {
     renderResult.getByText("Weiter").click();
 
     expect(renderResult.getByAltText("Bonus 200")).toBeInTheDocument();
+  });
+
+  test("shows description", () => {
+    renderResult.getByAltText("Bonus 200").click();
+
+    expect(renderResult.getByText("Bonus 200 Description")).toBeInTheDocument();
+  });
+
+  test("shows ranking", () => {
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "100"); // Anna: 100
+    renderResult.getByText("Weiter").click();
+
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "200"); // Bob: 200
+    renderResult.getByText("Weiter").click();
+
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "300"); // Anna: 400
+    renderResult.getByText("Weiter").click();
+
+    renderResult.getByText("Bob").click();
+
+    expect(renderResult.getByText("Rangliste")).toBeInTheDocument();
+    expect(renderResult.getByText("Bob (200)")).toBeInTheDocument();
+    expect(renderResult.getByText("Anna (400)")).toBeInTheDocument();
   });
 });
 
