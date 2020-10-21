@@ -7,7 +7,7 @@ import { Card, Deck } from "./Deck";
 
 const { Step } = Steps;
 
-interface PlayerModel {
+export interface PlayerModel {
   name: string;
   points: number[];
 }
@@ -73,10 +73,13 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
           ))}
         </Steps>
       </div>
-      <img src={card.src} alt={card.name}></img>
+      <img src={card.src} alt={card.name} className="card"></img>
       <label htmlFor="newValue">Neuer Wert</label>
       <input type="number" id="newValue" ref={inputRef} />
-      <Button onClick={onContinue}>Weiter</Button>
+      <br />
+      <Button onClick={onContinue} type="primary" shape="round">
+        Weiter
+      </Button>
     </div>
   );
 };

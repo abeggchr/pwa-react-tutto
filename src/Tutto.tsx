@@ -1,17 +1,21 @@
 import React, { FunctionComponent, useState } from "react";
 import "./App.css";
 import StartGame from "./StartTutto";
-import PlayTutto from "./PlayTutto";
+import PlayTutto, { PlayerModel } from "./PlayTutto";
 
 const Tutto: FunctionComponent = () => {
   const [isGameOn, setGameOn] = useState(false);
-
-  const players = [{ name: "A", points: [] }];
+  const [players, setPlayers] = useState<PlayerModel[]>([]);
 
   return isGameOn ? (
     <PlayTutto players={players} />
   ) : (
-    <StartGame onStart={() => setGameOn(true)} />
+    <StartGame
+      onStart={(players) => {
+        setPlayers(players);
+        setGameOn(true);
+      }}
+    />
   );
 };
 

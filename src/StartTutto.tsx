@@ -6,8 +6,11 @@ import {
   PlusCircleOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
+import { PlayerModel } from "./PlayTutto";
 
-const StartGame: FunctionComponent<{ onStart: () => void }> = (props) => {
+const StartGame: FunctionComponent<{
+  onStart: (players: PlayerModel[]) => void;
+}> = (props) => {
   const newPlayerInput = useRef<Input>(null);
 
   const [players, setPlayers] = useState<string[]>([]);
@@ -22,6 +25,13 @@ const StartGame: FunctionComponent<{ onStart: () => void }> = (props) => {
 
   const removePlayer = (name: string) => {
     setPlayers(players.filter((p) => p !== name));
+  };
+
+  const onStart = () => {
+    const out: PlayerModel[] = players.map((p) => {
+      return { name: p, points: [0] };
+    });
+    props.onStart(out);
   };
 
   return (
@@ -59,7 +69,7 @@ const StartGame: FunctionComponent<{ onStart: () => void }> = (props) => {
         </li>
       </ul>
 
-      <Button type="primary" onClick={props.onStart} shape="round">
+      <Button type="primary" onClick={onStart} shape="round">
         Spiel starten
       </Button>
     </>
