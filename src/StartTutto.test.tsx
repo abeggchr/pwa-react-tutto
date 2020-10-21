@@ -12,7 +12,11 @@ beforeEach(() => {
 });
 
 test("adds player", async () => {
-  const input = renderResult.getByLabelText("Neuer Spieler:");
+  const input = renderResult.getByAltText("Neuer Spieler:");
 
-  await userEvent.type(input, "A");
+  expect(renderResult.queryByText("Player")).not.toBeInTheDocument();
+  await userEvent.type(input, "Player");
+  renderResult.getByText("+").click();
+
+  expect(renderResult.getByText("Player")).toBeInTheDocument();
 });
