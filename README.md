@@ -1,4 +1,12 @@
+# Tutto
+
+A nice game, try it on: [Netlify](https://frosty-colden-e7f685.netlify.app/)
+
+# Tech stuff
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Deploy with Netlify.
 
 ## Available Scripts
 
