@@ -1,12 +1,16 @@
 # Tutto
 
-A nice game, try it on: [Netlify](https://frosty-colden-e7f685.netlify.app/)
+A family game with dices, try it [here](https://frosty-colden-e7f685.netlify.app/).
+
+All you need are 6 dices - and maybe the [rules](https://www.gamefactory-spiele.com/tutto).
+
+The UI is optimized for eBook browsers like the ones on a Tolino or a Pocketbook.
 
 # Tech stuff
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Deploy with Netlify.
+And it is automatically deployed with Netlify.
 
 ## Available Scripts
 
