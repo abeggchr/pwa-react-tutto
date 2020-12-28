@@ -35,18 +35,42 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
     let value = parseInt(inputRef.current!.input!.value);
     if (isNaN(value)) {
       return;
+    } else if (
+      card.validInputs !== undefined &&
+      !card.validInputs.includes(value)
+    ) {
+      return;
     } else {
       const nextActivePlayer =
         activePlayerIndex === players.length - 1 ? 0 : activePlayerIndex + 1;
-      setCard(deck.draw());
-      const updatedPlayers = players.map((p) => {
+      
+      let updatedPlayers = [...players];
+      if (
+        card.name === "Plus/Minus" &&
+        value === 1000 &&
+        Boolean(getWinningPlayer()) &&
+        getWinningPlayer() !== activePlayer
+      ) {
+        const winningPlayer = getWinningPlayer();
+        updatedPlayers = updatedPlayers.map((p) => {
+          if (p === winningPlayer) {
+            p.points.push(getPlayerPoints(p) - 1000);
+          }
+          return p;
+        });
+      }
+      updatedPlayers = updatedPlayers.map((p) => {
         if (players.indexOf(p) === activePlayerIndex) {
           p.points.push(value + getPlayerPoints(p));
         }
         return p;
       });
+
+      setCard(deck.draw());
       setPlayers(updatedPlayers);
-      setWinner(updatedPlayers.find((p) => getPlayerPoints(p) >= props.endOfGame));
+      setWinner(
+        updatedPlayers.find((p) => getPlayerPoints(p) >= props.endOfGame)
+      );
       setActivePlayerIndex(nextActivePlayer);
       inputRef.current!.setValue("");
     }
@@ -70,6 +94,15 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
 
   const getPlayersSortedByPoints = () => {
     return [...players].sort((a, b) => getPlayerPoints(b) - getPlayerPoints(a));
+  };
+
+  const getWinningPlayer = () => {
+    const sorted = getPlayersSortedByPoints();
+    if (getPlayerPoints(sorted[0]) !== getPlayerPoints(sorted[1])) {
+      return sorted[0];
+    } else {
+      return undefined;
+    }
   };
 
   return (

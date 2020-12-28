@@ -9,6 +9,7 @@ const mockDraw = jest.fn().mockImplementation(() => {
     name: "Bonus 200",
     occurence: 5,
     description: "Bonus 200 Description",
+    validInputs: [100, 200, 300, 400, 500, 1000, 5000],
   };
 });
 
@@ -121,6 +122,19 @@ describe("when there are 2 players Anna and Bob", () => {
     expect(renderResult.getByText("Rangliste")).toBeInTheDocument();
     expect(renderResult.getByText("Anna (6000)")).toBeInTheDocument();
     expect(renderResult.getByText("Bob (500)")).toBeInTheDocument();
+  });
+
+
+  test("performs input validation", () => {
+    expect(renderResult.queryByText("Anna")).toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).not.toBeInTheDocument();
+    
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "42"); // invalid
+    renderResult.getByText("Weiter").click();
+
+    //expect(renderResult.getByAltText("Neuer Wert")).toBeInvalid();
+    expect(renderResult.queryByText("Anna")).toBeInTheDocument();
+    expect(renderResult.queryByText("Bob")).not.toBeInTheDocument();
   });
 });
 
