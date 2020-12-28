@@ -10,8 +10,7 @@ body {
 
 .tutto .card {
   max-width: 100%;
-  border: 5px;
-  border-style: solid;
+  border: 5px solid;
   border-radius: 10px;
 }
 
@@ -22,9 +21,9 @@ body {
 }
 
 .tutto .values .player {
-  width: "40%";
-  float: "left";
-  padding-top: "5px";
+  width: 40%;
+  float: left;
+  padding-top: 5px;
 }
 
 .tutto .values .player .playerName {
