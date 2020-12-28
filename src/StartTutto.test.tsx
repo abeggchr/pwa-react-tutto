@@ -31,3 +31,11 @@ test("removes player", async () => {
   renderResult.getByTitle("-").click();
   expect(renderResult.queryByText("Player")).not.toBeInTheDocument();
 });
+
+test("sets winning threshold", async () => {
+  const input = renderResult.getByAltText("Gewinn:");
+  expect(input).toHaveValue(6000);
+  
+  await userEvent.type(input, "7000");
+  expect(input).toHaveValue(7000);
+});

@@ -5,15 +5,17 @@ import {
   UserOutlined,
   PlusCircleOutlined,
   MinusCircleOutlined,
+  CheckCircleOutlined
 } from "@ant-design/icons";
 import { PlayerModel } from "./PlayTutto";
 
 const StartGame: FunctionComponent<{
-  onStart: (players: PlayerModel[]) => void;
+  onStart: (players: PlayerModel[], endOfGame: number) => void;
 }> = (props) => {
   const newPlayerInput = useRef<Input>(null);
 
   const [players, setPlayers] = useState<string[]>(["A", "B"]);
+  const [endOfGame, setEndOfGame] = useState(6000);
 
   const addPlayer = () => {
     const name = newPlayerInput?.current?.input?.value;
@@ -32,10 +34,10 @@ const StartGame: FunctionComponent<{
 
   const onStart = () => {
     const updatedPlayers = addPlayer();
-    const out: PlayerModel[] = updatedPlayers.map((p) => {
+    const playerModels: PlayerModel[] = updatedPlayers.map((p) => {
       return { name: p, points: [0] };
     });
-    props.onStart(out);
+    props.onStart(playerModels, endOfGame);
   };
 
   return (
@@ -69,6 +71,15 @@ const StartGame: FunctionComponent<{
                 title="+"
               />
             }
+          />
+        </li>
+        <li>
+          <Input
+              alt="Gewinn:"
+              prefix={<CheckCircleOutlined className="site-form-item-icon" />}
+              type={"number"}
+              value={endOfGame}
+              onChange={(e) => setEndOfGame(parseInt(e.target.value))}
           />
         </li>
       </ul>

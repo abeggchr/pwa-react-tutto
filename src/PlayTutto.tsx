@@ -13,6 +13,8 @@ export interface PlayerModel {
 
 interface Props {
   players: PlayerModel[];
+  endOfGame: number;
+  onNewGame: () => void;
 }
 
 const PlayTutto: FunctionComponent<Props> = (props) => {
@@ -22,6 +24,8 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
   const [players, setPlayers] = useState<PlayerModel[]>(props.players);
   const [card, setCard] = useState<Card>(deck.draw());
   const [showRanking, setShowRanking] = useState(false);
+  const [winner, setWinner] = useState<PlayerModel | undefined>(undefined);
+  const [showWinner, setShowWinner] = useState<boolean>(true);
   const [showCardManual, setShowCardManual] = useState(false);
   const activePlayer = players[activePlayerIndex];
 
@@ -30,21 +34,22 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
   const onContinue = () => {
     let value = parseInt(inputRef.current!.input!.value);
     if (isNaN(value)) {
-      value = 0;
-    }
-    const nextActivePlayer =
-      activePlayerIndex === players.length - 1 ? 0 : activePlayerIndex + 1;
-    setCard(deck.draw());
-    setPlayers(
-      players.map((p) => {
+      return;
+    } else {
+      const nextActivePlayer =
+        activePlayerIndex === players.length - 1 ? 0 : activePlayerIndex + 1;
+      setCard(deck.draw());
+      const updatedPlayers = players.map((p) => {
         if (players.indexOf(p) === activePlayerIndex) {
           p.points.push(value + getPlayerPoints(p));
         }
         return p;
-      })
-    );
-    setActivePlayerIndex(nextActivePlayer);
-    inputRef.current!.setValue("");
+      });
+      setPlayers(updatedPlayers);
+      setWinner(updatedPlayers.find((p) => getPlayerPoints(p) >= props.endOfGame));
+      setActivePlayerIndex(nextActivePlayer);
+      inputRef.current!.setValue("");
+    }
   };
 
   const getPlayerPoints = (player: PlayerModel) => {
@@ -74,7 +79,7 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
         alt={card.name}
         className="card"
         onClick={() => setShowCardManual(true)}
-      ></img>
+      />
 
       <p className="values">
         <span onClick={() => setShowRanking(true)} className="player">
@@ -118,6 +123,23 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
         onCancel={() => setShowCardManual(false)}
       >
         {card.description}
+      </Modal>
+      <Modal
+        title={`${winner?.name} hat gewonnen`}
+        visible={Boolean(winner) && showWinner}
+        onOk={props.onNewGame}
+        okText="Neues Spiel"
+        onCancel={() => setShowWinner(false)}
+        cancelText="Weiterspielen"
+      >
+        <p>Rangliste</p>
+        <ol>
+          {getPlayersSortedByPoints().map((p) => (
+            <li key={p.name}>
+              {p.name} ({getPlayerPoints(p)})
+            </li>
+          ))}
+        </ol>
       </Modal>
     </div>
   );

@@ -32,6 +32,8 @@ describe("when there are 2 players Anna and Bob", () => {
           { name: "Anna", points: [0] },
           { name: "Bob", points: [0] },
         ]}
+        onNewGame={() => {}}
+        endOfGame={6000}
       />
     );
   });
@@ -104,6 +106,22 @@ describe("when there are 2 players Anna and Bob", () => {
     expect(renderResult.getByText("Bob (200)")).toBeInTheDocument();
     expect(renderResult.getByText("Anna (400)")).toBeInTheDocument();
   });
+
+  test("shows dialog when a player wins", () => {
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "5000"); // Anna: 5000
+    renderResult.getByText("Weiter").click();
+
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "500"); // Bob: 500
+    renderResult.getByText("Weiter").click();
+
+    userEvent.type(renderResult.getByAltText("Neuer Wert"), "1000"); // Anna: 6000
+    renderResult.getByText("Weiter").click();
+
+    expect(renderResult.getByText("Anna hat gewonnen")).toBeInTheDocument();
+    expect(renderResult.getByText("Rangliste")).toBeInTheDocument();
+    expect(renderResult.getByText("Anna (6000)")).toBeInTheDocument();
+    expect(renderResult.getByText("Bob (500)")).toBeInTheDocument();
+  });
 });
 
 describe("when there are 3 players Anna, Bob and Chris", () => {
@@ -119,6 +137,8 @@ describe("when there are 3 players Anna, Bob and Chris", () => {
           { name: "Bob", points: [0] },
           { name: "Chris", points: [0] },
         ]}
+        onNewGame={() => {}}
+        endOfGame={6000}
       />
     );
   });

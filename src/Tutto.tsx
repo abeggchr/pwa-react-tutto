@@ -5,15 +5,23 @@ import PlayTutto, { PlayerModel } from "./PlayTutto";
 
 const Tutto: FunctionComponent = () => {
   const [isGameOn, setGameOn] = useState(false);
+  const [endOfGame, setEndOfGame] = useState(6000);
   const [players, setPlayers] = useState<PlayerModel[]>([]);
 
   return isGameOn ? (
-    <PlayTutto players={players} />
+    <PlayTutto
+      players={players}
+      endOfGame={endOfGame}
+      onNewGame={() => {
+        setGameOn(false);
+      }}
+    />
   ) : (
     <StartGame
-      onStart={(players) => {
+      onStart={(players, endOfGame) => {
         setPlayers(players);
         setGameOn(true);
+        setEndOfGame(endOfGame);
       }}
     />
   );
