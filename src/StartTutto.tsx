@@ -92,6 +92,8 @@ const StartGame: FunctionComponent<{
       >
         Spiel starten
       </Button>
+      
+      <p className="build-id">{process.env.COMMIT_REF}</p>
     </>
   );
 };

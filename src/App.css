@@ -46,3 +46,8 @@ body {
 .tutto .ant-steps-item-title {
   font-size: 16px;
 }
+
+.tutto .build-id {
+  width: 100%;
+  text-align: right;
+}
