@@ -33,17 +33,17 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
 
   const onContinue = () => {
     let value = parseInt(inputRef.current!.input!.value);
-    if (isNaN(value)) {
-      return;
-    } else if (
-      card.validInputs !== undefined &&
-      !card.validInputs.includes(value)
+    if (
+      isNaN(value) ||
+      (card.validInputs !== undefined && !card.validInputs.includes(value)) ||
+      value % 50 !== 0 ||
+      value > 9999
     ) {
       return;
     } else {
       const nextActivePlayer =
         activePlayerIndex === players.length - 1 ? 0 : activePlayerIndex + 1;
-      
+
       let updatedPlayers = [...players];
       if (
         card.name === "Plus/Minus" &&
@@ -87,9 +87,13 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
     );
     if (isWinner) {
       if (card.name === "Plus/Minus") {
-        return <span><CrownOutlined/> Skip!</span>;
+        return (
+          <span>
+            <CrownOutlined /> Skip!
+          </span>
+        );
       } else {
-        return <CrownOutlined/>;
+        return <CrownOutlined />;
       }
     } else {
       return <UserOutlined />;
