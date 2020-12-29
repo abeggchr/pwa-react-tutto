@@ -96,7 +96,7 @@ const cards: Card[] = [
   {
     src: "/cards/plus-minus.jpg",
     name: "Plus/Minus",
-    occurence: 5,
+    occurence: 500,
     description:
       "Würfelt der Spieler ein «Tutto», erhält er 1000 Punkte und dem führenden Spieler werden 1000 Punkte abgezogen. Die erwürfelten Punkte werden nicht berücksichtigt. Führen mehrere Spieler (dieselbe Punktzahl), bekommt jeder von ihnen 1000 Punkte abgezogen. Der würfelnde Spieler erhält aber trotzdem nur 1000 Punkte gutgeschrieben. Deckt der führende Spieler selbst die «Plus / Minus»-Karte auf, muss er sich natürlich keine Punkte abziehen. Er setzt aus, und der nächste Spieler ist an der Reihe",
     validInputs: undefined,

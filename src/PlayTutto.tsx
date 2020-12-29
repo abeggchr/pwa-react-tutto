@@ -86,7 +86,11 @@ const PlayTutto: FunctionComponent<Props> = (props) => {
         p.name !== player.name && getPlayerPoints(p) > getPlayerPoints(player)
     );
     if (isWinner) {
-      return <CrownOutlined />;
+      if (card.name === "Plus/Minus") {
+        return <span><CrownOutlined/> Skip!</span>;
+      } else {
+        return <CrownOutlined/>;
+      }
     } else {
       return <UserOutlined />;
     }
